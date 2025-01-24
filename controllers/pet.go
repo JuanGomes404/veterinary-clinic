@@ -35,6 +35,7 @@ func GetPetById(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(pet)
 }
+
 func CreatePet(w http.ResponseWriter, r *http.Request) {
 	var pet model.Pet
 	err := json.NewDecoder(r.Body).Decode(&pet)
