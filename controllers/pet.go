@@ -12,6 +12,7 @@ import (
 
 func GetPets(w http.ResponseWriter, r *http.Request) {
 	pets, err := services.GetAllPets()
+	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		http.Error(w, "Erro ao buscar os pets", http.StatusInternalServerError)
 		return
@@ -21,6 +22,7 @@ func GetPets(w http.ResponseWriter, r *http.Request) {
 
 func GetPetById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	w.Header().Set("Content-Type", "application/json")
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		http.Error(w, "ID inválido", http.StatusBadRequest)
