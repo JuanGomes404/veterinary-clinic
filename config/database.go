@@ -6,6 +6,10 @@ import (
 
 var DB *gorm.DB
 
-func ConnectDatabase() {
+func ConnectDatabase() *gorm.DB {
+
+}
+
+func GetSecrets(version string) {
 
 }

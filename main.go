@@ -2,6 +2,7 @@ package main
 
 import (
 	"VeterinaryClinic/config"
+	"VeterinaryClinic/model"
 	"VeterinaryClinic/routes"
 	"log"
 	"net/http"
@@ -10,7 +11,9 @@ import (
 )
 
 func main() {
-	config.ConnectDatabase()
+	db := config.ConnectDatabase()
+
+	model.MigrateDB(db)
 
 	router := mux.NewRouter()
 
