@@ -65,7 +65,6 @@ func UpdatePet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
-		http.Error(w, "ID inválido", http.StatusBadRequest)
 		writeJSONError(w, http.StatusBadRequest, "Invalid id")
 		return
 	}
