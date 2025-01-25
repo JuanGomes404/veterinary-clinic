@@ -32,13 +32,10 @@ func CreatePet(pet *model.Pet) error {
 
 func UpdatePet(id uint, updatedPet *model.Pet) error {
 	var pet model.Pet
-	// Verifica se o pet existe
 	result := config.DB.First(&pet, id)
 	if result.Error != nil {
 		return errors.New("Pet not found")
 	}
-
-	// Atualiza os dados do pet
 	pet.Name = updatedPet.Name
 	pet.Age = updatedPet.Age
 	pet.Species = updatedPet.Species
