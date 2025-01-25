@@ -12,6 +12,7 @@ func GetAllPets() ([]model.Pet, error) {
 	if result.Error != nil {
 		return nil, result.Error
 	}
+
 	return pets, nil
 }
 
