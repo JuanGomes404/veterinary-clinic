@@ -1,0 +1,32 @@
+name: Deploy to Cloud Run
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  deploy: 
+    name: Deploy to Cloud Run
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup GCP SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project-id: ${{secrets.GCP_PROJECT_ID}}
+          service_account_key: ${{secrets.GCP_SA_KEY}}
+          export_default_credentials: true
+
+      - name: Push Docker Image to Google Container Registry
+        run: |
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA
+      
+      - name: Deploy to GCP Cloud Run
+        run: |
+          gcloud run deploy veterinary-clinic \
+          -- image gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA \
+          --region ${{ secrets.GCP_REGION }} \
+          --platform managed \
+          --allow-unauthenticated
