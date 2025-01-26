@@ -7,16 +7,27 @@ import (
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
 func ConnectDatabase() *gorm.DB {
+	userSQL := GetSecret("klever-challenge", "sql-pass")
+	pass := GetSecret("klever-challenge", "sql-pass")
+	ipSQL := GetSecret("klever-challenge", "sql-ip")
 
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/veterinary-clinic?charset=utf8mb4&parseTime=True&loc=Local", userSQL, pass, ipSQL)
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Cannot connect database")
+	}
+	return db
 }
 
-func GetSecret(projectID, secretName string) (string, error) {
+func GetSecret(projectID, secretName string) string {
 	ctx := context.Background()
 
 	c, err := secretmanager.NewClient(ctx)
@@ -35,6 +46,7 @@ func GetSecret(projectID, secretName string) (string, error) {
 
 	if err != nil {
 		log.Fatalf("Cannot get the secret: %v", err)
+		return err.Error()
 	}
-	return string(result.Payload.Data), err
+	return string(result.Payload.Data)
 }
