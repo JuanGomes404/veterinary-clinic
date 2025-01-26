@@ -26,10 +26,18 @@ jobs:
           service_account_key: ${{secrets.GCP_SA_KEY}}
           export_default_credentials: true
 
-      - name: Push Docker Image to Google Container Registry
+      - name: Build Docker Image
         run: |
-          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA
-      
+          IMAGE_TAG="gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA"
+          echo "Building Docker image..."
+          docker build -t $IMAGE_TAG .
+
+      - name: Push Docker Image
+        run: |
+          IMAGE_TAG="gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA"
+          echo "Pushing Docker image with tag: $IMAGE_TAG"
+          docker push $IMAGE_TAG
+  
       - name: Deploy to GCP Cloud Run
         run: |
           gcloud run deploy veterinary-clinic \
