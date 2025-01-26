@@ -12,6 +12,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
       - name: Setup GCP SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
