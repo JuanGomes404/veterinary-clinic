@@ -14,7 +14,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() *gorm.DB {
-	userSQL := GetSecret("klever-challenge", "sql-pass")
+	userSQL := GetSecret("klever-challenge", "sql-user")
 	pass := GetSecret("klever-challenge", "sql-pass")
 	ipSQL := GetSecret("klever-challenge", "sql-ip")
 
