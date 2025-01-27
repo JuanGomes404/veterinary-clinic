@@ -26,28 +26,26 @@ jobs:
     
       - name: Setup GCP SDK
         uses: google-github-actions/setup-gcloud@v1
-        with:
-          project-id: ${{secrets.GCP_PROJECT_ID}}
-          service_account_key: ${{secrets.GCP_SA_KEY}}
-          export_default_credentials: true
 
       - name: Build Docker Image
         run: |
-          IMAGE_TAG="gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA"
+          IMAGE_TAG="${{ secrets.GCP_REGION }}-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}:$GITHUB_SHA"
           echo "Building Docker image..."
           docker build -t $IMAGE_TAG .
 
+      - name: Configure Docker Client for Artifact Registry
+        run: | 
+          gcloud auth configure-docker ${{ secrets.GCP_ARTIFACT_REGION }}-docker.pkg.dev --quiet
+
       - name: Push Docker Image
         run: |
-          gcloud auth configure-docker gcr.io
-          IMAGE_TAG="gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA"
-          echo "Pushing Docker image with tag: $IMAGE_TAG"
+          echo "Pushing Docker image.."
           docker push $IMAGE_TAG
   
       - name: Deploy to GCP Cloud Run
         run: |
           gcloud run deploy veterinary-clinic \
-          -- image gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA \
+          --image $IMAGE_TAG \
           --region ${{ secrets.GCP_REGION }} \
           --platform managed \
           --allow-unauthenticated
