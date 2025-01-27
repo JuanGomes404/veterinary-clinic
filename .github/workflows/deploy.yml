@@ -9,7 +9,8 @@ jobs:
   deploy: 
     name: Deploy to Cloud Run
     runs-on: ubuntu-latest
-
+    env:
+      IMAGE_TAG: ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic-repo/veterinary-clinic:$GITHUB_SHA
     steps: 
       - name: Checkout Code
         uses: actions/checkout@v3
