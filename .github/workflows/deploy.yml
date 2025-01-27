@@ -23,7 +23,7 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
-
+    
       - name: Setup GCP SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
@@ -39,6 +39,7 @@ jobs:
 
       - name: Push Docker Image
         run: |
+          gcloud auth configure-docker gcr.io
           IMAGE_TAG="gcr.io/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic:$GITHUB_SHA"
           echo "Pushing Docker image with tag: $IMAGE_TAG"
           docker push $IMAGE_TAG
