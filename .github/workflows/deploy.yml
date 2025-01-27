@@ -29,7 +29,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          IMAGE_TAG="${{ secrets.GCP_REGION }}-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}:$GITHUB_SHA"
+          IMAGE_TAG="${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/veterinary-clinic-repo/veterinary-clinic:$GITHUB_SHA"
           echo "Building Docker image..."
           docker build -t $IMAGE_TAG .
 
