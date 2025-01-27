@@ -31,7 +31,7 @@ jobs:
       - name: Build Docker Image
         run: |
           echo "Building Docker image..."
-          docker build -t 'veterinary-clinic' .
+          docker build -t 'veterinary-clinic-repo' .
 
       - name: Configure Docker Client for Artifact Registry
         run: | 
@@ -39,6 +39,7 @@ jobs:
 
       - name: Push Docker Image
         run: |
+          docker tag $IMAGE_TAG
           echo "Pushing Docker image.."
           docker push $IMAGE_TAG
   
