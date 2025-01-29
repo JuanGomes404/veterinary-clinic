@@ -3,7 +3,6 @@ package config
 import (
 	"context"
 	"fmt"
-	"log"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -22,7 +21,7 @@ func ConnectDatabase() *gorm.DB {
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Cannot connect database")
+		fmt.Errorf("Cannot connect database")
 	}
 	return db
 }
@@ -33,7 +32,7 @@ func GetSecret(projectID, secretName string) string {
 	c, err := secretmanager.NewClient(ctx)
 
 	if err != nil {
-		log.Fatalf("Fail to create a client from Secret Manager: &v", err)
+		fmt.Errorf("Fail to create a client from Secret Manager: %v", err)
 	}
 	defer c.Close()
 
@@ -45,7 +44,7 @@ func GetSecret(projectID, secretName string) string {
 	result, err := c.AccessSecretVersion(ctx, request)
 
 	if err != nil {
-		log.Fatalf("Cannot get the secret: %v", err)
+		fmt.Errorf("Cannot get the secret: %v", err)
 		return err.Error()
 	}
 	return string(result.Payload.Data)
