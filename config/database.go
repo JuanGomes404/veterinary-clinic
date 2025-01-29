@@ -16,9 +16,9 @@ var DB *gorm.DB
 func ConnectDatabase() *gorm.DB {
 	userSQL := GetSecret("klever-challenge", "sql-user")
 	pass := GetSecret("klever-challenge", "sql-pass")
-	ipSQL := GetSecret("klever-challenge", "sql-ip")
-
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/veterinary-clinic?charset=utf8mb4&parseTime=True&loc=Local", userSQL, pass, ipSQL)
+	instanceConName := GetSecret("klever-challenge", "sql-instance-name")
+	sqlDBname := GetSecret("klever-challenge", "sql-db-name")
+	dsn := fmt.Sprintf("%s:%s@unix(%s)/%s?charset=utf8mb4&parseTime=True", userSQL, pass, instanceConName, sqlDBname)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
