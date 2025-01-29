@@ -42,6 +42,7 @@ jobs:
           gcloud run deploy veterinary-clinic \
           --image ${{ env.IMAGE_NAME }} \
           --region ${{ secrets.GCP_REGION }} \
+          --add-cloudsql-instances ${{ secrets.GCP_DB_INSTANCE }} \
           --platform managed \
           --timeout=300s \
           --allow-unauthenticated
