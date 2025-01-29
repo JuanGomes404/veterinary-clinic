@@ -13,10 +13,10 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() *gorm.DB {
-	userSQL := GetSecret("klever-challenge", "sql-user")
-	pass := GetSecret("klever-challenge", "sql-pass")
-	instanceConName := GetSecret("klever-challenge", "sql-instance-name")
-	sqlDBname := GetSecret("klever-challenge", "sql-db-name")
+	userSQL := GetSecret("45782346572", "sql-user")
+	pass := GetSecret("45782346572", "sql-pass")
+	instanceConName := GetSecret("45782346572", "sql-instance-name")
+	sqlDBname := GetSecret("45782346572", "sql-db-name")
 	dsn := fmt.Sprintf("%s:%s@unix(%s)/%s?charset=utf8mb4&parseTime=True", userSQL, pass, instanceConName, sqlDBname)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -33,6 +33,7 @@ func GetSecret(projectID, secretName string) string {
 
 	if err != nil {
 		fmt.Errorf("Fail to create a client from Secret Manager: %v", err)
+		return ""
 	}
 	defer c.Close()
 
