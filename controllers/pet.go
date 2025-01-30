@@ -20,6 +20,7 @@ func writeJSONError(w http.ResponseWriter, statusCode int, message string) {
 }
 func GetPets(w http.ResponseWriter, r *http.Request) {
 	pets, err := services.GetAllPets()
+	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		http.Error(w, "Error fetching pets", http.StatusInternalServerError)
 		return
