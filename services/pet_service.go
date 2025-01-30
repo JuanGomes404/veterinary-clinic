@@ -4,6 +4,7 @@ import (
 	"VeterinaryClinic/config"
 	"VeterinaryClinic/model"
 	"errors"
+	"fmt"
 )
 
 func GetAllPets() ([]model.Pet, error) {
@@ -26,6 +27,7 @@ func GetPetByID(id uint) (*model.Pet, error) {
 }
 
 func CreatePet(pet *model.Pet) error {
+	fmt.Printf("Recebido para criação: %+v\n", pet)
 	result := config.DB.Create(pet)
 	return result.Error
 }

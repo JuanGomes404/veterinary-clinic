@@ -19,11 +19,11 @@ func ConnectDatabase() *gorm.DB {
 	sqlDBname := GetSecret("45782346572", "sql-db-name")
 	dsn := fmt.Sprintf("%s:%s@unix(%s)/%s?charset=utf8mb4&parseTime=True", userSQL, pass, instanceConName, sqlDBname)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Errorf("Cannot connect database")
 	}
-	return db
+	return DB
 }
 
 func GetSecret(projectID, secretName string) string {
