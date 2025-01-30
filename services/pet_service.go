@@ -38,12 +38,21 @@ func UpdatePet(id uint, updatedPet *model.Pet) error {
 	if result.Error != nil {
 		return errors.New("Pet not found")
 	}
-	pet.Name = updatedPet.Name
-	pet.Age = updatedPet.Age
-	pet.Species = updatedPet.Species
-	pet.Owner = updatedPet.Owner
+	updates := make(map[string]interface{})
 
-	result = config.DB.Save(&pet)
+	if updatedPet.Name != "" {
+		updates["Name"] = updatedPet.Name
+	}
+	if updatedPet.Age != 0 {
+		updates["Age"] = updatedPet.Age
+	}
+	if updatedPet.Species != "" {
+		updates["Species"] = updatedPet.Species
+	}
+	if updatedPet.Owner != "" {
+		updates["Owner"] = updatedPet.Owner
+	}
+	result = config.DB.Model(&pet).Updates(updates)
 	return result.Error
 }
 
