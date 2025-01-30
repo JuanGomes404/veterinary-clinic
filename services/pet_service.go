@@ -58,6 +58,10 @@ func UpdatePet(id uint, updatedPet *model.Pet) error {
 			return result.Error
 		}
 	}
+	updatedResult := config.DB.First(&pet, id)
+	if updatedResult.Error != nil {
+		return errors.New("Failed to retrieve updated pet")
+	}
 	return result.Error
 }
 
