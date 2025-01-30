@@ -62,7 +62,7 @@ func UpdatePet(id uint, updatedPet *model.Pet) error {
 	if updatedResult.Error != nil {
 		return errors.New("Failed to retrieve updated pet")
 	}
-	return result.Error
+	return updatedResult.Error
 }
 
 func DeletePet(id uint) error {
