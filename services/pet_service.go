@@ -52,7 +52,12 @@ func UpdatePet(id uint, updatedPet *model.Pet) error {
 	if updatedPet.Owner != "" {
 		updates["Owner"] = updatedPet.Owner
 	}
-	result = config.DB.Model(&pet).Updates(updates)
+	if len(updates) > 0 {
+		result = config.DB.Model(&pet).Updates(updates)
+		if result.Error != nil {
+			return result.Error
+		}
+	}
 	return result.Error
 }
 
