@@ -7,14 +7,14 @@ import (
 	"fmt"
 )
 
-func GetAllPets() ([]model.Pet, error) {
+func GetAllPets() (*[]model.Pet, error) {
 	var pets []model.Pet
 	result := config.DB.Find(&pets)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 
-	return pets, nil
+	return &pets, nil
 }
 
 func GetPetByID(id uint) (*model.Pet, error) {
@@ -32,11 +32,11 @@ func CreatePet(pet *model.Pet) error {
 	return result.Error
 }
 
-func UpdatePet(id uint, updatedPet *model.Pet) error {
+func UpdatePet(id uint, updatedPet *model.Pet) (*model.Pet, error) {
 	var pet model.Pet
 	result := config.DB.First(&pet, id)
 	if result.Error != nil {
-		return errors.New("Pet not found")
+		return nil, errors.New("Pet not found")
 	}
 	updates := make(map[string]interface{})
 
@@ -55,14 +55,10 @@ func UpdatePet(id uint, updatedPet *model.Pet) error {
 	if len(updates) > 0 {
 		result = config.DB.Model(&pet).Updates(updates)
 		if result.Error != nil {
-			return result.Error
+			return nil, result.Error
 		}
 	}
-	updatedResult := config.DB.First(&pet, id)
-	if updatedResult.Error != nil {
-		return errors.New("Failed to retrieve updated pet")
-	}
-	return updatedResult.Error
+	return &pet, nil
 }
 
 func DeletePet(id uint) error {
@@ -73,5 +69,6 @@ func DeletePet(id uint) error {
 	}
 
 	result = config.DB.Delete(&pet)
+
 	return result.Error
 }

@@ -46,6 +46,7 @@ func GetPetById(w http.ResponseWriter, r *http.Request) {
 
 func CreatePet(w http.ResponseWriter, r *http.Request) {
 	var pet model.Pet
+	w.Header().Set("Content-Type", "application/json")
 	err := json.NewDecoder(r.Body).Decode(&pet)
 	if err != nil {
 		writeJSONError(w, http.StatusBadRequest, "Invalid data")
@@ -63,6 +64,7 @@ func CreatePet(w http.ResponseWriter, r *http.Request) {
 
 func UpdatePet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	w.Header().Set("Content-Type", "application/json")
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		writeJSONError(w, http.StatusBadRequest, "Invalid id")
@@ -72,21 +74,22 @@ func UpdatePet(w http.ResponseWriter, r *http.Request) {
 	var updatedPet model.Pet
 	err = json.NewDecoder(r.Body).Decode(&updatedPet)
 	if err != nil {
-		writeJSONError(w, http.StatusBadRequest, "Invalid data")
+		writeJSONError(w, http.StatusBadRequest, "Invalid data format")
 		return
 	}
 
-	err = services.UpdatePet(uint(id), &updatedPet)
+	pet, err := services.UpdatePet(uint(id), &updatedPet)
 	if err != nil {
 		writeJSONError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(updatedPet)
+	json.NewEncoder(w).Encode(pet)
 }
 
 func DeletePet(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	w.Header().Set("Content-Type", "application/json")
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		writeJSONError(w, http.StatusBadRequest, "Invalid id")
@@ -100,4 +103,5 @@ func DeletePet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Pet deleted successfully"})
 }
