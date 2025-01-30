@@ -7,7 +7,7 @@ This API allows managing pet records in a veterinary clinic.
 - **GORM** (for database integration)
 - **Google Cloud Run** (for deploy in GCP)
 - **Cloud SQL** (SQL instance in GCP)
-- **Secret Maneger** (Managing secrets, like the database and Google Cloud informations)
+- **Secret Manager** (Managing secrets, like the database and Google Cloud informations)
 This structure follows an architecture pattern known as **MVC (Model-View-Controller)**.
 
 - **config**: Stores database configurations.
