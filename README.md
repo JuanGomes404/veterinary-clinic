@@ -8,7 +8,11 @@ This API allows managing pet records in a veterinary clinic.
 - **Google Cloud Run** (for deploy in GCP)
 - **Cloud SQL** (SQL instance in GCP)
 - **Secret Manager** (Managing secrets, like the database and Google Cloud informations)
-This structure follows an architecture pattern known as **MVC (Model-View-Controller)**.
+- **Docker** 
+
+
+
+This structure follows an architecture pattern known as **MVC (Model-View-Controller)**
 
 - **config**: Stores database configurations.
 - **controllers**: Contains controllers that handle HTTP requests and interact with services and models.
@@ -16,10 +20,6 @@ This structure follows an architecture pattern known as **MVC (Model-View-Contro
 - **routes**: Manages routing of requests to the appropriate controllers.
 - **services**: Contains business logic, which can be seen as a **Service** or **Business Logic** layer.
 
-
-
-
-Therefore, this structure can be described as a blend of **MVC** with an additional **service** layer for business logic.
 
 ```json
 📂 config
