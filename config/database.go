@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var DB *gorm.DB = ConnectDatabase()
 
 func ConnectDatabase() *gorm.DB {
 	userSQL := GetSecret("45782346572", "sql-user")
